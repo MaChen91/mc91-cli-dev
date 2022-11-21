@@ -23,9 +23,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@mc91-cli-dev/utils": "^1.0.2",
+    "@mc91-cli-dev/utils": "^1.0.3",
     "import-local": "^3.1.0",
     "npmlog": "^7.0.1"
   },
-  "gitHead": "65e1d424c0f28d19fcf7f0e013b754b23297a38c"
+  "gitHead": "65812e249263ec01a34ea5c909c3de4fbaca5d6a"
 }
