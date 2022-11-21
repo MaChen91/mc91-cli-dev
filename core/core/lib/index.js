@@ -2,5 +2,5 @@
 
 module.exports = core;
 function core () { 
-    console.log('exec core');
+    console.log('exec core 1');
 }
