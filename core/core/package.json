@@ -1,0 +1,27 @@
+{
+  "name": "@mc91-cli-dev/core",
+  "version": "1.0.0",
+  "description": "mc91-cli-dev core",
+  "author": "MaChen91 <bj060421@126.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "node ./__tests__/core.test.js"
+  },
+  "bin": {
+    "mc91": "bin/index.js"
+  },
+  "dependencies": {
+    "@mc91-cli-dev/utils": "file:../../utils/utils",
+    "import-local": "^3.1.0",
+    "npmlog": "^7.0.1"
+  }
+}
