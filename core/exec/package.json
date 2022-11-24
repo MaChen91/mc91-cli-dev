@@ -1,6 +1,6 @@
 {
   "name": "@mc91-cli-dev/exec",
-  "version": "1.0.8",
+  "version": "1.0.9-alpha.0",
   "description": "mc91-cli-dev execute package",
   "author": "MaChen91 <bj060421@126.com>",
   "homepage": "https://github.com/MaChen91/mc91-cli-dev#readme",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@mc91-cli-dev/log": "^1.0.5",
-    "@mc91-cli-dev/package": "^1.0.8"
+    "@mc91-cli-dev/package": "^1.0.9-alpha.0"
   },
   "gitHead": "a3cc4ac0162315071118a56c1ef410cc87ae24db"
 }
