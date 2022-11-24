@@ -28,8 +28,9 @@
   },
   "dependencies": {
     "@mc91-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
-    "@mc91-cli-dev/utils": "file:../../utils/utils",
+    "@mc91-cli-dev/utils": "^1.0.6",
     "npminstall": "^6.6.1",
     "pkg-dir": "^7.0.0"
-  }
+  },
+  "gitHead": "fcfccb54fb6607b108a0ce49151044a7b7560c06"
 }

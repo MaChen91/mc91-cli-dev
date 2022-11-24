@@ -1,5 +1,5 @@
 {
-  "name": "get-npm-info",
+  "name": "@mc91-cli-dev/get-npm-info",
   "version": "1.0.6",
   "description": "get npm info",
   "author": "MaChen91 <bj060421@126.com>",
@@ -27,5 +27,6 @@
     "axios": "^1.1.3",
     "semver": "^7.3.8",
     "url-join": "^5.0.0"
-  }
+  },
+  "gitHead": "fcfccb54fb6607b108a0ce49151044a7b7560c06"
 }
