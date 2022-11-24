@@ -1,0 +1,35 @@
+{
+  "name": "@mc91-cli-dev/package",
+  "version": "1.0.5",
+  "description": "npm modules",
+  "author": "MaChen91 <bj060421@126.com>",
+  "homepage": "https://github.com/MaChen91/mc91-cli-dev#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaChen91/mc91-cli-dev.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/@mc91-cli-dev/package.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
+  },
+  "dependencies": {
+    "@mc91-cli-dev/utils": "file:../../utils/utils",
+    "@mc91-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "npminstall": "^6.6.1",
+    "pkg-dir": "^7.0.0"
+  }
+}

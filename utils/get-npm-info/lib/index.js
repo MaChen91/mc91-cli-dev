@@ -2,7 +2,7 @@
 const axios = require('axios');
 
 const semver = require('semver');
-module.exports = {getNpmInfo, getNpmVersions, getNpmSemverVersion};
+module.exports = {getNpmInfo, getDefaultRegistry, getNpmVersions, getNpmSemverVersion};
 
 // 获取npm包信息
 async function getNpmInfo(npmName, registry) {
