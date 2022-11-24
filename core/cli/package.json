@@ -1,6 +1,6 @@
 {
   "name": "@mc91-cli-dev/core",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "mc91-cli-dev core",
   "author": "MaChen91 <bj060421@126.com>",
   "homepage": "",
@@ -23,11 +23,11 @@
     "access": "public"
   },
   "dependencies": {
+    "@mc91-cli-dev/exec": "file:../../core/exec",
     "@mc91-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "@mc91-cli-dev/init": "file:../../commands/init",
     "@mc91-cli-dev/log": "file:../../utils/log",
     "@mc91-cli-dev/utils": "file:../../utils/utils",
-    "@mc91-cli-dev/init": "file:../../commands/init",
-    "@mc91-cli-dev/exec": "file:../../core/exec",
     "colors": "^1.4.0",
     "commander": "^9.4.1",
     "import-local": "^3.1.0",
