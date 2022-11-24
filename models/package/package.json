@@ -1,6 +1,6 @@
 {
   "name": "@mc91-cli-dev/package",
-  "version": "1.0.9-alpha.0",
+  "version": "1.0.9",
   "description": "npm modules",
   "author": "MaChen91 <bj060421@126.com>",
   "homepage": "https://github.com/MaChen91/mc91-cli-dev#readme",
@@ -27,7 +27,7 @@
     "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
   },
   "dependencies": {
-    "@mc91-cli-dev/get-npm-info": "^1.0.9-alpha.0",
+    "@mc91-cli-dev/get-npm-info": "^1.0.9",
     "@mc91-cli-dev/utils": "^1.0.8",
     "fs-extra": "^10.1.0",
     "npminstall": "^6.6.1",
