@@ -23,12 +23,19 @@
     "access": "public"
   },
   "dependencies": {
+    "@mc91-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
     "@mc91-cli-dev/log": "file:../../utils/log",
     "@mc91-cli-dev/utils": "file:../../utils/utils",
+    "@mc91-cli-dev/init": "file:../../commands/init",
+    "@mc91-cli-dev/exec": "file:../../core/exec",
     "colors": "^1.4.0",
+    "commander": "^9.4.1",
     "import-local": "^3.1.0",
     "npmlog": "^7.0.1",
-    "semver": "^7.3.8"
+    "path-exists": "^5.0.0",
+    "root-check": "^2.0.0",
+    "semver": "^7.3.8",
+    "user-home": "^3.0.0"
   },
   "gitHead": "65812e249263ec01a34ea5c909c3de4fbaca5d6a"
 }
