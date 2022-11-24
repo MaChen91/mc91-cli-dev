@@ -9,7 +9,6 @@ const log = require('@mc91-cli-dev/log');
 const colors = require('colors');
 const userHome = require('user-home');
 const commander = require('commander');
-const init = require('@mc91-cli-dev/init');
 const exec = require('@mc91-cli-dev/exec');
 let args = null;
 let config = null;

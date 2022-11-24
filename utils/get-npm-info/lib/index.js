@@ -43,9 +43,8 @@ function getSemverVersions(baseVersion, versions) {
 
 async function getLatestVersion(npmName, registry) {
   const versions = await getNpmVersions(npmName, registry);
-  console.log('versions', versions);
   if (versions && versions.length > 0) {
-    return versions.sort((a, b) => semver.gt(b, a))[0];
+    return versions.sort((a, b) => semver.compare(b, a))[0];
   }
   return null;
 }

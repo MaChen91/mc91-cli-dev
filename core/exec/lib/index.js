@@ -50,8 +50,9 @@ async function exec(...args) {
     pkg = new Package({targetPath, packageName, packageVersion});
   }
   console.log('exists', await pkg.exists());
-  let dir = await pkg.getRootFilePath();
-  if (dir) {
-    require(dir).apply(null, arguments);
+  let rootFile = await pkg.getRootFilePath();
+  console.log(rootFile);
+  if (rootFile) {
+    require(rootFile).apply(null, arguments);
   }
 }

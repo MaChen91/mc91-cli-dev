@@ -109,15 +109,24 @@ class Package {
   //获取入口文件的路径
   async getRootFilePath() {
     const {packageDirectorySync} = await import('pkg-dir');
-    //1.获取package.json所在目录
-    const dir = packageDirectorySync({cwd: this.targetPath});
-    if (dir) {
-      //2.读取package.json
-      const pkgFile = require(path.resolve(dir, 'package.json'));
-      //3.获取main/lib
-      if (pkgFile && pkgFile.main) {
-        //4.拼接路径 - path.join
-        return path.resolve(dir, pkgFile.main);
+
+    if (this.storeDir) {
+      return _getRootFile(this.cacheFilePath);
+    } else {
+      return _getRootFile(this.targetPath);
+    }
+
+    function _getRootFile(targetPath) {
+      //1.获取package.json所在目录
+      const dir = packageDirectorySync({cwd: targetPath});
+      if (dir) {
+        //2.读取package.json
+        const pkgFile = require(path.resolve(dir, 'package.json'));
+        //3.获取main/lib
+        if (pkgFile && pkgFile.main) {
+          //4.拼接路径 - path.join
+          return path.resolve(dir, pkgFile.main);
+        }
       }
     }
   }
