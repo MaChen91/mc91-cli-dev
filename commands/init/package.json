@@ -1,7 +1,7 @@
 {
-  "name": "@imooc-cli-dev/init",
+  "name": "@mc91-cli-dev/init",
   "version": "1.0.7",
-  "description": "imooc-cli-dev init",
+  "description": "mc91-cli-dev init",
   "author": "MaChen91 <bj060421@126.com>",
   "homepage": "https://github.com/MaChen91/mc91-cli-dev#readme",
   "license": "ISC",
@@ -29,5 +29,5 @@
   "dependencies": {
     "@mc91-cli-dev/log": "^1.0.5"
   },
-  "gitHead": "fcfccb54fb6607b108a0ce49151044a7b7560c06"
+  "gitHead": "a3cc4ac0162315071118a56c1ef410cc87ae24db"
 }

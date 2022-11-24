@@ -27,10 +27,10 @@
     "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
   },
   "dependencies": {
-    "@mc91-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "@mc91-cli-dev/get-npm-info": "^1.0.7",
     "@mc91-cli-dev/utils": "^1.0.7",
     "npminstall": "^6.6.1",
     "pkg-dir": "^7.0.0"
   },
-  "gitHead": "fcfccb54fb6607b108a0ce49151044a7b7560c06"
+  "gitHead": "a3cc4ac0162315071118a56c1ef410cc87ae24db"
 }
