@@ -2,7 +2,13 @@
 const axios = require('axios');
 
 const semver = require('semver');
-module.exports = {getNpmInfo, getDefaultRegistry, getNpmVersions, getNpmSemverVersion};
+module.exports = {
+  getNpmInfo,
+  getDefaultRegistry,
+  getNpmVersions,
+  getNpmSemverVersion,
+  getLatestVersion,
+};
 
 // 获取npm包信息
 async function getNpmInfo(npmName, registry) {
@@ -33,6 +39,14 @@ function getSemverVersions(baseVersion, versions) {
   return versions
     .filter(version => semver.satisfies(version, `^${baseVersion}`))
     .sort((a, b) => semver.gt(b, a));
+}
+
+async function getLatestVersion(npmName, registry) {
+  const versions = await getNpmVersions(npmName, registry);
+  if (versions && versions.length > 0) {
+    return versions.sort((a, b) => semver.gt(b, a))[0];
+  }
+  return null;
 }
 
 async function getNpmSemverVersion(baseVersion, npmName, registry) {

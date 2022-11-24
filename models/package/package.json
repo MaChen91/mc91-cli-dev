@@ -29,7 +29,9 @@
   "dependencies": {
     "@mc91-cli-dev/get-npm-info": "^1.0.8",
     "@mc91-cli-dev/utils": "^1.0.8",
+    "fs-extra": "^10.1.0",
     "npminstall": "^6.6.1",
+    "path-exists": "^5.0.0",
     "pkg-dir": "^7.0.0"
   },
   "gitHead": "a3cc4ac0162315071118a56c1ef410cc87ae24db"

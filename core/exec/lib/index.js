@@ -29,7 +29,6 @@ async function exec(...args) {
   let pkg = null;
   //如果targetPath不存在
   if (!targetPath) {
-    console.log(homePath, CACHE_DIR);
     //生成缓存路径todo
     targetPath = path.resolve(homePath, CACHE_DIR);
     storeDir = path.resolve(targetPath, 'node_modules');
@@ -39,15 +38,17 @@ async function exec(...args) {
     //传入pkg对象
     pkg = new Package({targetPath, storeDir, packageName, packageVersion});
     //更新package
-    if (pkg.exists()) {
+    if (await pkg.exists()) {
+      log.verbose('更新', 'package更新检查');
     } else {
-      await pkg.install();
       //安装package
+      await pkg.install();
     }
   } else {
     //传入pkg对象
     pkg = new Package({targetPath, packageName, packageVersion});
   }
+  console.log('exists', await pkg.exists());
   let dir = await pkg.getRootFilePath();
   if (dir) {
     require(dir).apply(null, arguments);
