@@ -13,7 +13,7 @@ class Package {
     if (!isObject(options)) {
       throw new Error('Package类的options必须为对象');
     }
-    console.log('targetPath', options.targetPath);
+    //console.log('targetPath', options.targetPath);
     //package的路径
     this.targetPath = options.targetPath;
     //缓存package路径
@@ -22,9 +22,18 @@ class Package {
     this.packageName = options.packageName;
     //package的version
     this.packageVersion = options.packageVersion;
-    console.log('this.packageName', this.packageName);
+    //console.log('this.packageName', this.packageName);
     //缓存package目录前缀
     this.cacheFilePathPrefix = this.packageName.replace('/', '_');
+    this.pathExists = null;
+  }
+
+  async pathExistsSync(path) {
+    if (!this.pathExists) {
+      const {pathExistsSync} = await import('path-exists');
+      this.pathExists = pathExistsSync;
+    }
+    return this.pathExists(path);
   }
 
   get cacheFilePath() {
@@ -34,13 +43,19 @@ class Package {
     );
   }
 
+  getSepcifiedFilePath(packageVersion) {
+    return path.resolve(
+      this.storeDir,
+      `_${this.cacheFilePathPrefix}@${packageVersion}@${this.packageName}`,
+    );
+  }
+
   //如果是latest版本，获取最新版本号
   async prepare() {
-    const {pathExistsSync} = await import('path-exists');
-    console.log(this.packageVersion);
+    //console.log(this.packageVersion);
 
     //创建缓存目录
-    if (this.storeDir && !pathExistsSync(this.storeDir)) {
+    if (this.storeDir && (await !this.pathExistsSync(this.storeDir))) {
       fse.mkdirpSync(this.storeDir);
     }
 
@@ -51,18 +66,17 @@ class Package {
 
   //是否存在
   async exists() {
-    const {pathExistsSync} = await import('path-exists');
     if (this.storeDir) {
       await this.prepare();
-      console.log('this.cacheFilePath', this.cacheFilePath);
-      return pathExistsSync(this.cacheFilePath);
+      //console.log('this.cacheFilePath', this.cacheFilePath);
+      return await this.pathExistsSync(this.cacheFilePath);
     } else {
-      return pathExistsSync(this.targetPath);
+      return await this.pathExistsSync(this.targetPath);
     }
   }
 
-  async install() {
-    await this.prepare();
+  async install(latestPkgVersion) {
+    if (!latestPkgVersion) await this.prepare();
     npminstall({
       root: this.targetPath,
       storeDir: this.storeDir,
@@ -70,7 +84,7 @@ class Package {
       pkgs: [
         {
           name: this.packageName,
-          version: this.packageVersion,
+          version: latestPkgVersion ?? this.packageVersion,
         },
       ],
     });
@@ -80,6 +94,16 @@ class Package {
   //如果最新版本存在 跳过更新
   async update() {
     await this.prepare();
+    //1.获取最新的npm模块版本号
+    const latestPackageVersion = await getLatestVersion(this.packageName);
+    //2.查询最新版本号对应的路径是否存在
+    const latestFilePath = this.getSepcifiedFilePath(latestPackageVersion);
+    console.log(latestPackageVersion, latestFilePath);
+    //3.如果不存在 直接安装最新版本
+    if (!(await this.pathExistsSync(latestFilePath))) {
+      return await this.install(latestPackageVersion);
+    }
+    return latestFilePath;
   }
 
   //获取入口文件的路径

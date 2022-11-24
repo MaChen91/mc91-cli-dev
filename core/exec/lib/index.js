@@ -40,6 +40,7 @@ async function exec(...args) {
     //更新package
     if (await pkg.exists()) {
       log.verbose('更新', 'package更新检查');
+      await pkg.update();
     } else {
       //安装package
       await pkg.install();
