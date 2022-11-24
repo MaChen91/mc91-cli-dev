@@ -28,5 +28,8 @@
     "semver": "^7.3.8",
     "url-join": "^5.0.0"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "gitHead": "fcfccb54fb6607b108a0ce49151044a7b7560c06"
 }
