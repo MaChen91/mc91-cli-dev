@@ -4,7 +4,10 @@ const {getDefaultRegistry, getLatestVersion} = require('@mc91-cli-dev/get-npm-in
 const path = require('path');
 const npminstall = require('npminstall');
 const fse = require('fs-extra');
+const log = require('@mc91-cli-dev/log');
 
+//包管理工具
+//提供 缓存 更新 本地安装功能
 class Package {
   constructor(options) {
     if (!options) {
@@ -13,16 +16,13 @@ class Package {
     if (!isObject(options)) {
       throw new Error('Package类的options必须为对象');
     }
-    //console.log('targetPath', options.targetPath);
     //package的路径
     this.targetPath = options.targetPath;
     //缓存package路径
     this.storeDir = options.storeDir;
-    //package的name
     this.packageName = options.packageName;
-    //package的version
     this.packageVersion = options.packageVersion;
-    //console.log('this.packageName', this.packageName);
+    log.verbose('Package', this.packageName, this.packageVersion, this.targetPath, this.storeDir);
     //缓存package目录前缀
     this.cacheFilePathPrefix = this.packageName.replace('/', '_');
     this.pathExists = null;
@@ -109,7 +109,6 @@ class Package {
   //获取入口文件的路径
   async getRootFilePath() {
     const {packageDirectorySync} = await import('pkg-dir');
-
     if (this.storeDir) {
       return _getRootFile(this.cacheFilePath);
     } else {

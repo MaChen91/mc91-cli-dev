@@ -1,12 +1,11 @@
 {
-  "name": "@mc91-cli-dev/package",
+  "name": "@mc91-cli-dev/request",
   "version": "1.0.10-alpha.0",
-  "description": "npm modules",
+  "description": "> TODO: description",
   "author": "MaChen91 <bj060421@126.com>",
   "homepage": "https://github.com/MaChen91/mc91-cli-dev#readme",
   "license": "ISC",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -22,19 +21,12 @@
     "url": "git+https://github.com/MaChen91/mc91-cli-dev.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@mc91-cli-dev/package.test.js"
+    "test": "node ./__tests__/@mc91-cli-dev/request.test.js"
   },
   "bugs": {
     "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
   },
   "dependencies": {
-    "@mc91-cli-dev/get-npm-info": "^1.0.10-alpha.0",
-    "@mc91-cli-dev/utils": "^1.0.8",
-    "@mc91-cli-dev/log": "^1.0.5",
-    "fs-extra": "^10.1.0",
-    "npminstall": "^6.6.1",
-    "path-exists": "^5.0.0",
-    "pkg-dir": "^7.0.0"
-  },
-  "gitHead": "a3cc4ac0162315071118a56c1ef410cc87ae24db"
+    "axios": "^1.2.0"
+  }
 }

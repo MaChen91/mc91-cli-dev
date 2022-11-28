@@ -10,8 +10,6 @@ const colors = require('colors');
 const userHome = require('user-home');
 const commander = require('commander');
 const exec = require('@mc91-cli-dev/exec');
-let args = null;
-let config = null;
 
 const program = new commander.Command();
 async function core() {
@@ -25,7 +23,6 @@ async function core() {
 
 async function prepare() {
   checkPkgVersion(); //检查包版本
-  checkNodeVersion(); //检查Node版本
   await checkRoot(); //检查Root权限
   await checkUserHome(); //检查用户主目录
   await checkEnv(); //检查环境变量
@@ -57,7 +54,7 @@ function registerCommand() {
       process.env.LOG_LEVEL = 'info';
     }
     log.level = process.env.LOG_LEVEL;
-    log.verbose('test debug', log.level);
+    log.verbose('开启调试DEBUG模式');
   });
 
   //未知命令监听
@@ -79,17 +76,7 @@ function registerCommand() {
 
 //检查包版本
 function checkPkgVersion() {
-  log.info('cli', pkg.version);
-}
-
-function checkNodeVersion() {
-  //获取当前node版本号
-  const currentVersion = process.version;
-  //获取最低版本号
-  const lowestVersion = constant.LOWEST_NODE_VERSION;
-  if (!semver.gte(currentVersion, lowestVersion)) {
-    throw new Error(colors.red(`mc91-cli 需要安装 v${lowestVersion} 以上版本的 Node.js`));
-  }
+  log.info('mc91当前版本为:', pkg.version);
 }
 
 //检查Root权限
@@ -101,7 +88,7 @@ async function checkRoot() {
 //检查用户主目录
 async function checkUserHome() {
   const {pathExistsSync} = await import('path-exists');
-  log.info('userHome', userHome);
+  log.info('用户主目录:', userHome);
   if (!userHome || !pathExistsSync(userHome)) {
     throw new Error(colors.red('当前登录用户主目录不存在！'));
   }
@@ -113,10 +100,10 @@ async function checkEnv() {
   const dotenvPath = path.resolve(userHome, '.env');
   const {pathExistsSync} = await import('path-exists');
   if (pathExistsSync(dotenvPath)) {
-    config = dotenv.config({
+    const config = dotenv.config({
       path: dotenvPath,
     });
-    //log.verbose('启用用户环境变量', config);
+    log.info('启用用户环境变量', dotenvPath, config);
   }
   createDefaultConfig();
   //log.verbose('环境变量', process.env.CLI_HOME_PATH);

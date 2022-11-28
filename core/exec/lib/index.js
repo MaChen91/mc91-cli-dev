@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = exec;
+//子进程
+const cp = require('child_process');
 const path = require('path');
 const log = require('@mc91-cli-dev/log');
 const Package = require('@mc91-cli-dev/package');
@@ -15,8 +17,8 @@ async function exec(...args) {
   let targetPath = process.env.CLI_TARGET_PATH;
   const homePath = process.env.CLI_HOME_PATH;
   let storeDir = '';
-  //   log.verbose('targetPath', targetPath);
-  //   log.verbose('homePath', homePath);
+  log.verbose('targetPath', targetPath);
+  log.verbose('homePath', homePath);
 
   const [, , cmd] = args;
   //获取cmd命令名称
@@ -49,10 +51,37 @@ async function exec(...args) {
     //传入pkg对象
     pkg = new Package({targetPath, packageName, packageVersion});
   }
-  console.log('exists', await pkg.exists());
+  //console.log('exists', await pkg.exists());
   let rootFile = await pkg.getRootFilePath();
-  console.log(rootFile);
+  //console.log(rootFile);
   if (rootFile) {
-    require(rootFile).apply(null, arguments);
+    try {
+      const o = Array.from(arguments);
+      o[o.length - 1] = {opts: cmd.opts()};
+      const code = `require('${rootFile}').call(null, ${JSON.stringify(o)})`;
+      const child = spawn('node', ['-e', code], {
+        cwd: process.cwd(),
+        stdio: 'inherit',
+      });
+      child.on('error', e => {
+        log.error('exec子进程执行失败', e.message, __dirname);
+        process.exit(1);
+      });
+
+      child.on('exit', e => {
+        log.verbose('exec子进程执行成功', e);
+        process.exit(0);
+      });
+    } catch (error) {
+      log.error(error.message);
+    }
   }
+}
+
+//兼容windows操作系统
+function spawn(command, args, options) {
+  const win32 = process.platform === 'win32';
+  const cmd = win32 ? 'cmd' : command;
+  const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
+  return cp.spawn(cmd, cmdArgs, options || {});
 }
