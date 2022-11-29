@@ -77,7 +77,7 @@ class Package {
 
   async install(latestPkgVersion) {
     if (!latestPkgVersion) await this.prepare();
-    npminstall({
+    await npminstall({
       root: this.targetPath,
       storeDir: this.storeDir,
       registry: getDefaultRegistry(),

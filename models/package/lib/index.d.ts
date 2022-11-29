@@ -1,22 +1,32 @@
-/// <reference types="typescript" />
-interface IOptions {
-  targetPath: string; // Path to the target directory
-  storeDir: string; // Path to the store directory
-  packageName: string; // Name of the package
-  packageVersion: string; // Version of the package
-}
+/// <reference types="node" />
 
-declare class Package {
+//abc
+export declare class Package {
   readonly targetPath: string;
   readonly storeDir: string;
   readonly packageName: string;
   packageVersion: string;
   readonly cacheFilePathPrefix: string;
   private pathExists: Function | null;
-  constructor(options: IOptions);
+  /**
+   * 类构造函数
+   * @param options.targetPath 包管理目录
+   * @param options.storeDir 存储pkg目录
+   * @param options.packageName 包名
+   * @param options.packageVersion 版本号
+   */
+  constructor(options: {
+    targetPath: string;
+    storeDir: string;
+    packageName: string;
+    packageVersion: string;
+  });
   public prepare(): Promise<void>;
   public install(): Promise<void>;
   public update(): Promise<void>;
   public getRootFilePath(): string;
   public exists(): Promise<boolean>;
 }
+
+//abc
+export = Package;

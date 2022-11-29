@@ -13,6 +13,10 @@ const SETTINGS = {
 
 const CACHE_DIR = 'dependencies';
 
+/**
+ * 首先获取Command指令,通过Package类安装指令相关依赖
+ * 其次执行指令内部的init方法
+ */
 async function exec(...args) {
   let targetPath = process.env.CLI_TARGET_PATH;
   const homePath = process.env.CLI_HOME_PATH;
@@ -46,6 +50,7 @@ async function exec(...args) {
     } else {
       //安装package
       await pkg.install();
+      log.verbose('完成安装');
     }
   } else {
     //传入pkg对象
