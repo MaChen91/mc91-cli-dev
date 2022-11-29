@@ -32,6 +32,7 @@
     "@mc91-cli-dev/package": "file:../../models/package",
     "@mc91-cli-dev/request": "file:../../utils/request",
     "@mc91-cli-dev/utils": "file:../../utils/utils",
+    "colors": "^1.4.0",
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.5",
     "semver": "^7.3.8",

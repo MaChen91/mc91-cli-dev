@@ -1,11 +1,10 @@
 'use strict';
 
 module.exports = exec;
-//子进程
-const cp = require('child_process');
 const path = require('path');
 const log = require('@mc91-cli-dev/log');
 const Package = require('@mc91-cli-dev/package');
+const {execCp} = require('@mc91-cli-dev/utils');
 
 const SETTINGS = {
   init: '@mc91-cli-dev/init',
@@ -64,7 +63,7 @@ async function exec(...args) {
       const o = Array.from(arguments);
       o[o.length - 1] = {opts: cmd.opts()};
       const code = `require('${rootFile}').call(null, ${JSON.stringify(o)})`;
-      const child = spawn('node', ['-e', code], {
+      const child = execCp('node', ['-e', code], {
         cwd: process.cwd(),
         stdio: 'inherit',
       });
@@ -81,12 +80,4 @@ async function exec(...args) {
       log.error(error.message);
     }
   }
-}
-
-//兼容windows操作系统
-function spawn(command, args, options) {
-  const win32 = process.platform === 'win32';
-  const cmd = win32 ? 'cmd' : command;
-  const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
-  return cp.spawn(cmd, cmdArgs, options || {});
 }

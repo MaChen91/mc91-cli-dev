@@ -9,15 +9,20 @@ const fs = require('fs');
 const fse = require('fs-extra');
 const inquirer = require('inquirer');
 const semver = require('semver');
+const colors = require('colors');
 const getProjectTemplate = require('./getProjectTemplate');
 const TYPE_PROJECT = 'project';
 const TYPE_COMPONENT = 'component';
+const TEMPLATE_TYPE_NORMAL = 'normal';
+const TEMPLATE_TYPE_CUSTOM = 'custom';
 
 class InitCommand extends Command {
   init() {
     this.projectName = this._argv[0] || '';
     this.force = !!this._cmd.opts.force;
     this.templates = [];
+    this.templateInfo = null;
+    this.templateNpm = null;
     log.verbose('INIT', 'projectName:', this.projectName);
     log.verbose('INIT', 'force:', this.force);
   }
@@ -29,17 +34,59 @@ class InitCommand extends Command {
       const projectInfo = await this.prepare();
       //2.下载模版
       await this.downloadTemplate(projectInfo);
-      log.verbose('projectInfo 构建完成', projectInfo);
+      log.verbose('模板构建完成下载');
       //3.安装模版
+      await this.installTemplate();
     } catch (error) {
       log.error(error.message);
     }
   }
 
+  async installTemplate() {
+    if (this.templateInfo) {
+      log.verbose('安装模版类型为', this.templateInfo.type);
+      switch (this.templateInfo.type) {
+        case TEMPLATE_TYPE_NORMAL:
+          await this.installNormalTemplate();
+          break;
+        case TEMPLATE_TYPE_CUSTOM:
+          await this.installCustomTemplate();
+          break;
+        default:
+          throw new Error('无效的模板类型');
+      }
+    } else {
+      throw new Error('模板信息不存在');
+    }
+  }
+
+  async installNormalTemplate() {
+    const templatePath = path.resolve(this.templateNpm.cacheFilePath, 'template');
+    log.verbose('缓存模版路径', templatePath);
+    const targetPath = path.resolve(process.cwd(), this.projectName);
+    fse.ensureDirSync(targetPath);
+    let spinner = spinnerStart('开始安装模板');
+    try {
+      fse.copySync(templatePath, targetPath);
+    } catch (error) {
+    } finally {
+      spinner.stop();
+      console.log();
+      log.success('模板安装成功');
+      log.info('运行以下命令开始开发');
+      log.info(colors.yellow(`cd ${this.projectName}`));
+      log.info(colors.yellow(`npm i`));
+      log.info(colors.yellow('npm run serve'));
+    }
+  }
+
+  async installCustomTemplate() {}
+
   async downloadTemplate({projectName, projectVersion, projectTemplate}) {
     //1.通过项目模板API获取项目模板信息
     const find = this.templates.find(tmp => tmp.npmName == projectTemplate);
     const {npmName, version} = find;
+    this.templateInfo = find;
     const targetPath = path.resolve(userHome, '.mc91-cli', 'template');
     const storeDir = path.resolve(userHome, '.mc91-cli', 'template', 'node_modules');
 
@@ -61,6 +108,7 @@ class InitCommand extends Command {
         spinner = spinnerStart('开始检查更新模板');
         await templateNpm.update();
       }
+      this.templateNpm = templateNpm;
     } catch (error) {
       console.log(error);
     } finally {
