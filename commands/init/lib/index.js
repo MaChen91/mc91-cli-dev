@@ -3,13 +3,14 @@
 const log = require('@mc91-cli-dev/log');
 const Command = require('@mc91-cli-dev/command');
 const Package = require('@mc91-cli-dev/package');
-const {spinnerStart} = require('@mc91-cli-dev/utils');
+const {spinnerStart, execCpAsync} = require('@mc91-cli-dev/utils');
 const userHome = require('user-home');
 const fs = require('fs');
 const fse = require('fs-extra');
 const inquirer = require('inquirer');
 const semver = require('semver');
-const colors = require('colors');
+
+const WhiteCommand = ['npm', 'cnpm', 'yarn'];
 const getProjectTemplate = require('./getProjectTemplate');
 const TYPE_PROJECT = 'project';
 const TYPE_COMPONENT = 'component';
@@ -23,19 +24,21 @@ class InitCommand extends Command {
     this.templates = [];
     this.templateInfo = null;
     this.templateNpm = null;
+    //模板存储路经
+    this.targetPath = path.resolve(process.cwd(), this.projectName);
     log.verbose('INIT', 'projectName:', this.projectName);
     log.verbose('INIT', 'force:', this.force);
   }
 
   async exec() {
     try {
-      log.verbose('INIT EXEC PREPARE');
-      //1.准备阶段
+      log.verbose('模板准备');
       const projectInfo = await this.prepare();
-      //2.下载模版
+
+      log.verbose('模板下载');
       await this.downloadTemplate(projectInfo);
-      log.verbose('模板构建完成下载');
-      //3.安装模版
+
+      log.verbose('模板安装');
       await this.installTemplate();
     } catch (error) {
       log.error(error.message);
@@ -63,26 +66,52 @@ class InitCommand extends Command {
   async installNormalTemplate() {
     const templatePath = path.resolve(this.templateNpm.cacheFilePath, 'template');
     log.verbose('缓存模版路径', templatePath);
-    const targetPath = path.resolve(process.cwd(), this.projectName);
-    fse.ensureDirSync(targetPath);
+    fse.ensureDirSync(this.targetPath);
     let spinner = spinnerStart('开始安装模板');
     try {
-      fse.copySync(templatePath, targetPath);
+      fse.copySync(templatePath, this.targetPath);
     } catch (error) {
     } finally {
       spinner.stop();
       console.log();
       log.success('模板安装成功');
-      log.info('运行以下命令开始开发');
-      log.info(colors.yellow(`cd ${this.projectName}`));
-      log.info(colors.yellow(`npm i`));
-      log.info(colors.yellow('npm run serve'));
+    }
+    const {installCommand, startCommand} = this.templateInfo;
+    //依赖安装
+    if (installCommand) {
+      try {
+        await this.execCommand(installCommand);
+        await this.execCommand(startCommand);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        console.log();
+      }
+    }
+  }
+
+  //installCommand | startCommand
+  async execCommand(command) {
+    if (command && typeof command === 'string') {
+      let [cmd, ...args] = command.split(' ');
+      if (!this.checkWhiteCommand(cmd)) {
+        throw new Error('执行命令不合法');
+      }
+      //inherit保留父进程的输出
+      const res = await execCpAsync(cmd, args, {stdio: 'inherit', cwd: this.targetPath});
+      if (res !== 0) {
+        throw new Error(`执行 ${command} 命令失败`);
+      }
     }
   }
 
   async installCustomTemplate() {}
 
-  async downloadTemplate({projectName, projectVersion, projectTemplate}) {
+  checkWhiteCommand(cmd) {
+    return WhiteCommand.includes(cmd);
+  }
+
+  async downloadTemplate({projectTemplate}) {
     //1.通过项目模板API获取项目模板信息
     const find = this.templates.find(tmp => tmp.npmName == projectTemplate);
     const {npmName, version} = find;

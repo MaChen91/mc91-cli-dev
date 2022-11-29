@@ -4,6 +4,7 @@ module.exports = {
   isObject,
   spinnerStart,
   execCp,
+  execCpAsync,
 };
 
 function spinnerStart(msg = '正在加载中...') {
@@ -24,4 +25,13 @@ function execCp(command, args, options) {
   const cmd = win32 ? 'cmd' : command;
   const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
   return require('child_process').spawn(cmd, cmdArgs, options || {});
+}
+
+//同步执行child exec process
+function execCpAsync(command, args, options) {
+  return new Promise((resolve, reject) => {
+    const p = execCp(command, args, options);
+    p.on('error', reject);
+    p.on('exit', resolve);
+  });
 }
