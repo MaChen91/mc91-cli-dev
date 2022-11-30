@@ -24,7 +24,7 @@ export declare class Package {
   public prepare(): Promise<void>;
   public install(): Promise<void>;
   public update(): Promise<void>;
-  public getRootFilePath(): string;
+  public getRootFilePath(): Promise<string>;
   public exists(): Promise<boolean>;
 }
 

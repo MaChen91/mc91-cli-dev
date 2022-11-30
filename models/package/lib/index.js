@@ -68,7 +68,6 @@ class Package {
   async exists() {
     if (this.storeDir) {
       await this.prepare();
-      //console.log('this.cacheFilePath', this.cacheFilePath);
       return await this.pathExistsSync(this.cacheFilePath);
     } else {
       return await this.pathExistsSync(this.targetPath);
@@ -101,8 +100,11 @@ class Package {
     console.log(latestPackageVersion, latestFilePath);
     //3.如果不存在 直接安装最新版本
     if (!(await this.pathExistsSync(latestFilePath))) {
-      return await this.install(latestPackageVersion);
+      let res = await this.install(latestPackageVersion);
+      this.packageVersion = latestPackageVersion;
+      return res;
     }
+    this.packageVersion = latestPackageVersion;
     return latestFilePath;
   }
 
