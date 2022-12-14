@@ -23,7 +23,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@mc91-cli-dev/add": "file:../../commands/add",
+    "@mc91-cli-dev/add": "^1.1.1",
     "@mc91-cli-dev/exec": "^1.1.1",
     "@mc91-cli-dev/get-npm-info": "^1.0.10-alpha.0",
     "@mc91-cli-dev/log": "^1.0.5",
@@ -37,5 +37,5 @@
     "semver": "^7.3.8",
     "user-home": "^3.0.0"
   },
-  "gitHead": "a3cc4ac0162315071118a56c1ef410cc87ae24db"
+  "gitHead": "d6e6a86f3f153e9f39754cee5c02843f2d454ed7"
 }
