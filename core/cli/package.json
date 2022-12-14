@@ -1,6 +1,6 @@
 {
   "name": "@mc91-cli-dev/core",
-  "version": "1.1.1",
+  "version": "1.1.2-alpha.0",
   "description": "mc91-cli-dev core",
   "author": "MaChen91 <bj060421@126.com>",
   "homepage": "",
@@ -23,8 +23,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@mc91-cli-dev/add": "^1.1.1",
-    "@mc91-cli-dev/exec": "^1.1.1",
+    "@mc91-cli-dev/add": "^1.1.2-alpha.0",
+    "@mc91-cli-dev/exec": "^1.1.2-alpha.0",
     "@mc91-cli-dev/get-npm-info": "^1.0.10-alpha.0",
     "@mc91-cli-dev/log": "^1.0.5",
     "@mc91-cli-dev/utils": "^1.0.11",
