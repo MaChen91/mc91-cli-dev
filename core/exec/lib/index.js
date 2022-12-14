@@ -4,10 +4,11 @@ module.exports = exec;
 const path = require('path');
 const log = require('@mc91-cli-dev/log');
 const Package = require('@mc91-cli-dev/package');
-const {execCp} = require('@mc91-cli-dev/utils');
+const { execCp } = require('@mc91-cli-dev/utils');
 
 const SETTINGS = {
   init: '@mc91-cli-dev/init',
+  add: '@mc91-cli-dev/add',
 };
 
 const CACHE_DIR = 'dependencies';
@@ -41,7 +42,7 @@ async function exec(...args) {
     log.verbose('storeDir', storeDir);
 
     //传入pkg对象
-    pkg = new Package({targetPath, storeDir, packageName, packageVersion});
+    pkg = new Package({ targetPath, storeDir, packageName, packageVersion });
     //更新package
     if (await pkg.exists()) {
       log.verbose('更新', 'package更新检查');
@@ -53,7 +54,7 @@ async function exec(...args) {
     }
   } else {
     //传入pkg对象
-    pkg = new Package({targetPath, packageName, packageVersion});
+    pkg = new Package({ targetPath, packageName, packageVersion });
   }
   //console.log('exists', await pkg.exists());
   let rootFile = await pkg.getRootFilePath();
@@ -61,18 +62,18 @@ async function exec(...args) {
   if (rootFile) {
     try {
       const o = Array.from(arguments);
-      o[o.length - 1] = {opts: cmd.opts()};
+      o[o.length - 1] = { opts: cmd.opts() };
       const code = `require('${rootFile}').call(null, ${JSON.stringify(o)})`;
       const child = execCp('node', ['-e', code], {
         cwd: process.cwd(),
         stdio: 'inherit',
       });
-      child.on('error', e => {
+      child.on('error', (e) => {
         log.error('exec子进程执行失败', e.message, __dirname);
         process.exit(1);
       });
 
-      child.on('exit', e => {
+      child.on('exit', (e) => {
         log.verbose('exec子进程执行成功', e);
         process.exit(0);
       });

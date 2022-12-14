@@ -10,6 +10,7 @@ const colors = require('colors');
 const userHome = require('user-home');
 const commander = require('commander');
 const exec = require('@mc91-cli-dev/exec');
+const add = require('@mc91-cli-dev/add');
 
 const program = new commander.Command();
 async function core() {
@@ -38,7 +39,16 @@ function registerCommand() {
     .option('-tp, --targetPath <targetPath>', '是否指定本地调试文件', '');
 
   //action(name, options, command)
-  program.command('init [projectName]').option('-f, --force', '是否强制执行', false).action(exec);
+  program
+    .command('init [projectName]')
+    .option('-f, --force', '是否强制执行', false)
+    .action(exec);
+
+  //
+  program
+    .command('add [templateName]')
+    .option('-f, --force', '是否强制添加代码', false)
+    .action(exec);
 
   //指定targetPath
   program.on('option:targetPath', function () {
@@ -59,7 +69,7 @@ function registerCommand() {
 
   //未知命令监听
   program.on('command:*', function (obj) {
-    const availableCommands = program.commands.map(cmd => cmd.name());
+    const availableCommands = program.commands.map((cmd) => cmd.name());
     console.log(colors.red('未知的命令：' + obj[0]));
     if (availableCommands.length > 0) {
       console.log(colors.red('可用命令：' + availableCommands.join(',')));
@@ -87,7 +97,7 @@ async function checkRoot() {
 
 //检查用户主目录
 async function checkUserHome() {
-  const {pathExistsSync} = await import('path-exists');
+  const { pathExistsSync } = await import('path-exists');
   log.info('用户主目录:', userHome);
   if (!userHome || !pathExistsSync(userHome)) {
     throw new Error(colors.red('当前登录用户主目录不存在！'));
@@ -98,7 +108,7 @@ async function checkUserHome() {
 async function checkEnv() {
   const dotenv = require('dotenv');
   const dotenvPath = path.resolve(userHome, '.env');
-  const {pathExistsSync} = await import('path-exists');
+  const { pathExistsSync } = await import('path-exists');
   if (pathExistsSync(dotenvPath)) {
     const config = dotenv.config({
       path: dotenvPath,
@@ -127,7 +137,7 @@ async function checkGlobalUpdate() {
   //1.获取当前版本号和模块名
   const currentVersion = pkg.version;
   const npmName = pkg.name;
-  const {getNpmSemverVersion} = require('@mc91-cli-dev/get-npm-info');
+  const { getNpmSemverVersion } = require('@mc91-cli-dev/get-npm-info');
   //2.调用npm API，获取所有版本号
   //3.提取所有版本号，比对哪些版本号是大于当前版本号
   const lastVersion = await getNpmSemverVersion(currentVersion, npmName);
