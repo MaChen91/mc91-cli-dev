@@ -44,9 +44,14 @@ function registerCommand() {
     .option('-f, --force', '是否强制执行', false)
     .action(exec);
 
-  //
+  //add Template
   program
     .command('add [templateName]')
+    .option('-f, --force', '是否强制添加代码', false)
+    .action(exec);
+
+  program
+    .command('publish')
     .option('-f, --force', '是否强制添加代码', false)
     .action(exec);
 

@@ -9,6 +9,7 @@ const { execCp } = require('@mc91-cli-dev/utils');
 const SETTINGS = {
   init: '@mc91-cli-dev/init',
   add: '@mc91-cli-dev/add',
+  publish: '@mc91-cli-dev/publish',
 };
 
 const CACHE_DIR = 'dependencies';
@@ -24,7 +25,8 @@ async function exec(...args) {
   log.verbose('targetPath', targetPath);
   log.verbose('homePath', homePath);
 
-  const [, , cmd] = args;
+  const cmd = args[args.length - 1];
+  console.log(cmd);
   //获取cmd命令名称
   const cmdName = cmd.name();
   //获取对应包名称
