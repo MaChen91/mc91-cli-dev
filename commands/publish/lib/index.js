@@ -9,21 +9,48 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const command_1 = require("@mc91-cli-dev/command");
-const log_1 = require("@mc91-cli-dev/log");
-class PublishCommand extends command_1.default {
+const Command = require('@mc91-cli-dev/command');
+const log = require('@mc91-cli-dev/log');
+const path = require('path');
+const fs = require('fs');
+const fse = require('fs-extra');
+const git_1 = require("@mc91-cli-dev/git");
+class PublishCommand extends Command {
+    constructor(argv) {
+        super(argv);
+    }
     init() {
         console.log('init', this._argv);
     }
-    exec() {
-        throw new Error('exec error');
+    async exec() {
+        const startTime = new Date().getTime();
+        await this.prepare();
+        const git = new git_1.default(this.projectInfo);
+        git.init();
+        const endTime = new Date().getTime();
+        log.info('本次发布耗时', Math.floor((endTime - startTime) / 1000), 'ms');
+    }
+    async prepare() {
+        const projectPath = process.cwd();
+        const pkgPath = path.resolve(projectPath, 'package.json');
+        log.verbose('package.json', pkgPath);
+        if (!fs.existsSync(pkgPath)) {
+            throw new Error('package.json不存在！');
+        }
+        const pkg = fse.readJsonSync(pkgPath);
+        const { name, version, scripts } = pkg;
+        log.verbose('package.json', name, version, scripts);
+        if (!name || !version || !scripts || !scripts.build) {
+            throw new Error('package.json信息不全，请检查是否存在name、version和scripts（需提供build命令）！');
+        }
+        this.projectInfo = { name, version, dir: projectPath };
     }
 }
 __decorate([
     debug,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], PublishCommand.prototype, "exec", null);
 function init(argv) {
     return new PublishCommand(argv);
@@ -35,7 +62,7 @@ function debug(target, propertyKey, descriptor) {
             await originalMethod.apply(this, args);
         }
         catch (error) {
-            log_1.default.error(error.message);
+            log.error(error.message);
             if (process.env.LOG_LEVEL === 'verbose') {
                 console.log(error);
             }

@@ -26,7 +26,7 @@ async function exec(...args) {
   log.verbose('homePath', homePath);
 
   const cmd = args[args.length - 1];
-  console.log(cmd);
+  //console.log(cmd);
   //获取cmd命令名称
   const cmdName = cmd.name();
   //获取对应包名称

@@ -1,7 +1,7 @@
 {
-  "name": "@mc91-cli-dev/publish",
+  "name": "@mc91-cli-dev/git",
   "version": "1.1.2-alpha.1",
-  "description": "> TODO: description",
+  "description": "mc91-cli-dev git",
   "author": "MaChen91 <bj060421@126.com>",
   "homepage": "https://github.com/MaChen91/mc91-cli-dev#readme",
   "license": "ISC",
@@ -21,19 +21,18 @@
     "url": "git+https://github.com/MaChen91/mc91-cli-dev.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@mc91-cli-dev/publish.test.js",
+    "test": "node ./__tests__/@mc91-cli-dev/git.test.js",
     "build": "tsc -p tsconfig.json"
   },
   "bugs": {
     "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
   },
   "dependencies": {
-    "@mc91-cli-dev/command": "file:../../models/command",
-    "@mc91-cli-dev/git": "file:../../models/git",
-    "@mc91-cli-dev/log": "^1.0.5",
-    "fs-extra": "^11.1.0"
-  },
-  "devDependencies": {
-    "@types/node": "^18.11.15"
+    "@mc91-cli-dev/log": "^1.0.4",
+    "@mc91-cli-dev/request": "^1.0.0",
+    "@mc91-cli-dev/utils": "^1.0.4",
+    "@types/node": "^18.11.15",
+    "simple-git": "^3.15.1",
+    "user-home": "^3.0.0"
   }
 }

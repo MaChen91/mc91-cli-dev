@@ -12,15 +12,14 @@ class Command {
     if (!Array.isArray(argv)) {
       throw new Error(`${__filename} 必须为数组`);
     }
-
-    this._argv = argv[0];
+    this._argv = argv;
     let runner = new Promise((resolve, reject) => {
       let chain = Promise.resolve();
       chain = chain.then(() => this.checkNodeVersion());
       chain = chain.then(() => this.initArgs());
       chain = chain.then(() => this.init());
       chain = chain.then(() => this.exec());
-      chain.catch(err => {
+      chain.catch((err) => {
         log.error(err.message);
       });
     });
@@ -29,6 +28,7 @@ class Command {
   initArgs() {
     this._cmd = this._argv[this._argv.length - 1];
     this._argv = this._argv.slice(0, this._argv.length - 1);
+    log.verbose('initArgs', this._cmd, this._argv);
   }
 
   checkNodeVersion() {
@@ -36,7 +36,11 @@ class Command {
     const currentVersion = process.version;
     //比对最低版本号
     if (!semver.gte(currentVersion, LOWEST_NODE_VERSION)) {
-      throw new Error(colors.red(`mc91-cli 需要安装 v${LOWEST_NODE_VERSION} 以上版本的 Node.js`));
+      throw new Error(
+        colors.red(
+          `mc91-cli 需要安装 v${LOWEST_NODE_VERSION} 以上版本的 Node.js`,
+        ),
+      );
     }
   }
 
