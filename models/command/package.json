@@ -1,6 +1,6 @@
 {
   "name": "@mc91-cli-dev/command",
-  "version": "1.1.2-alpha.2",
+  "version": "1.1.2-alpha.3",
   "description": "mc91-cli-dev command",
   "author": "MaChen91 <bj060421@126.com>",
   "homepage": "https://github.com/MaChen91/mc91-cli-dev#readme",
@@ -28,7 +28,7 @@
     "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
   },
   "dependencies": {
-    "@mc91-cli-dev/log": "^1.1.2-alpha.2",
+    "@mc91-cli-dev/log": "^1.1.2-alpha.3",
     "colors": "^1.4.0",
     "semver": "^7.3.8"
   },
