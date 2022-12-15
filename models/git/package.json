@@ -28,11 +28,14 @@
     "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
   },
   "dependencies": {
-    "@mc91-cli-dev/log": "^1.1.2-alpha.2",
+    "@mc91-cli-dev/log": "file:../../utils/log",
     "@mc91-cli-dev/request": "^1.0.0",
-    "@mc91-cli-dev/utils": "^1.0.4",
+    "@mc91-cli-dev/utils": "file:../../utils/utils",
     "@types/node": "^18.11.15",
+    "fs-extra": "^11.1.0",
+    "inquirer": "^8.2.5",
     "simple-git": "^3.15.1",
+    "terminal-link": "^2.1.1",
     "user-home": "^3.0.0"
   }
 }

@@ -20,15 +20,16 @@ class PublishCommand extends Command {
         super(argv);
     }
     init() {
-        console.log('init', this._argv);
     }
     async exec() {
         const startTime = new Date().getTime();
         await this.prepare();
-        const git = new git_1.default(this.projectInfo);
+        let options = Object.assign(Object.assign({}, this.projectInfo), this._cmd.opts);
+        const git = new git_1.default(options);
+        await git.prepare();
         git.init();
         const endTime = new Date().getTime();
-        log.info('本次发布耗时', Math.floor((endTime - startTime) / 1000), 'ms');
+        log.info('PUBLISH', '本次发布耗时', Math.floor((endTime - startTime) / 1000), 'ms');
     }
     async prepare() {
         const projectPath = process.cwd();

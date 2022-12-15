@@ -30,7 +30,7 @@
   "dependencies": {
     "@mc91-cli-dev/command": "file:../../models/command",
     "@mc91-cli-dev/git": "file:../../models/git",
-    "@mc91-cli-dev/log": "^1.1.2-alpha.2",
+    "@mc91-cli-dev/log": "file:../../utils/log",
     "fs-extra": "^11.1.0"
   },
   "devDependencies": {

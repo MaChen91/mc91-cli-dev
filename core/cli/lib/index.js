@@ -52,7 +52,7 @@ function registerCommand() {
 
   program
     .command('publish')
-    .option('-f, --force', '是否强制添加代码', false)
+    .option('--refreshServer', '强制更新远程Git仓库')
     .action(exec);
 
   //指定targetPath

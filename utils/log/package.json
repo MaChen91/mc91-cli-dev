@@ -21,16 +21,13 @@
     "url": "git+https://github.com/MaChen91/mc91-cli-dev.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@mc91-cli-dev/log.test.js",
-    "build": "tsc -p tsconfig.json"
+    "test": "node ./__tests__/@mc91-cli-dev/log.test.js"
   },
   "bugs": {
     "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
   },
   "dependencies": {
+    "@types/npmlog": "^4.1.4",
     "npmlog": "^7.0.1"
-  },
-  "devDependencies": {
-    "@types/node": "^18.11.15"
   }
 }
