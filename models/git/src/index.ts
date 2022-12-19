@@ -5,7 +5,7 @@ import GitHub from './GitHub';
 import Gitee from './Gitee';
 import GitServer from './GitServer';
 import { Gitnore } from './config';
-import CloudBuild from '@mc91-cli-dev/cloudbuild';
+import CloudBuild from './cloudbuild';
 const semver = require('semver');
 const terminalLink = require('terminal-link');
 const userHome = require('user-home');

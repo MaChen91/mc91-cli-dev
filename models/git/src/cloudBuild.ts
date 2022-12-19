@@ -2,8 +2,8 @@
 import { io } from 'socket.io-client';
 import { get } from 'lodash-es';
 import inquirer from 'inquirer';
-import Git from '@mc91-cli-dev/git';
 
+import Git from './index';
 const log = require('@imooc-cli-dev/log');
 const request = require('@imooc-cli-dev/request');
 

@@ -1,4 +1,4 @@
-import Git from '@mc91-cli-dev/git';
+import Git from './index';
 declare class CloudBuild {
     git: Git;
     buildCmd: string;
