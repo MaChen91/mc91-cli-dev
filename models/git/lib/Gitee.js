@@ -50,4 +50,3 @@ class Gitee extends GitServer_1.default {
     }
 }
 exports.default = Gitee;
-//# sourceMappingURL=Gitee.js.map

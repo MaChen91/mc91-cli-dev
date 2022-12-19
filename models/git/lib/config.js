@@ -23,4 +23,3 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?`;
-//# sourceMappingURL=config.js.map

@@ -627,4 +627,3 @@ function verbose(async = true) {
     };
 }
 exports.default = Git;
-//# sourceMappingURL=index.js.map

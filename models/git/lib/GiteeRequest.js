@@ -38,4 +38,3 @@ class GitRequest {
     }
 }
 exports.default = GitRequest;
-//# sourceMappingURL=GiteeRequest.js.map

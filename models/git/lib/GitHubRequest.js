@@ -41,4 +41,3 @@ class GitHubRequest {
     }
 }
 exports.default = GitHubRequest;
-//# sourceMappingURL=GitHubRequest.js.map

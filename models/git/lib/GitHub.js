@@ -46,4 +46,3 @@ class GitHub extends GitServer_1.default {
     }
 }
 exports.default = GitHub;
-//# sourceMappingURL=GitHub.js.map

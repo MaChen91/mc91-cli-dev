@@ -20,4 +20,3 @@ class GitServer {
     }
 }
 exports.default = GitServer;
-//# sourceMappingURL=GitServer.js.map
