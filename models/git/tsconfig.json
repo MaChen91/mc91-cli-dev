@@ -18,6 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["./lib"],
+  "include": ["./src"],
   "exclude": ["./__tests__", "node_modules"]
 }

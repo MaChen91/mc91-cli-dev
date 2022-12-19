@@ -24,10 +24,10 @@ class PublishCommand extends Command {
     async exec() {
         const startTime = new Date().getTime();
         await this.prepare();
-        let options = Object.assign(Object.assign({}, this.projectInfo), this._cmd.opts);
-        const git = new git_1.default(options);
+        const git = new git_1.default(this.projectInfo, this._cmd.opts);
         await git.prepare();
-        git.init();
+        await git.init();
+        await git.commit();
         const endTime = new Date().getTime();
         log.info('PUBLISH', '本次发布耗时', Math.floor((endTime - startTime) / 1000), 'ms');
     }

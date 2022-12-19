@@ -7,9 +7,10 @@ abstract class GitServer {
   }
   abstract createRepo(name: string): Promise<any>;
   abstract createOrgRepo(name: string, login: string): Promise<any>;
-  abstract getRemote(): Promise<any>;
+  abstract getRepo(name: string, login: string): Promise<any>;
+  abstract getRemote(name: string, login: string): string;
   abstract getUser(): Promise<any>;
-  abstract getOrg(): Promise<any>;
+  abstract getOrg(username: string): Promise<any>;
   abstract getTokenUrl(): string;
   abstract getTokenHelpUrl(): string;
 

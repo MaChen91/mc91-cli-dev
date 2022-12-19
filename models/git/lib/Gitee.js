@@ -1,24 +1,46 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const GitServer_1 = require("./GitServer");
+const GiteeRequest_1 = require("./GiteeRequest");
 class Gitee extends GitServer_1.default {
     constructor() {
         super('gitee');
     }
-    async createRepo(name) {
-        console.log('createRepo');
+    setToken(token) {
+        super.setToken(token);
+        this.request = new GiteeRequest_1.default(token);
     }
-    async createOrgRepo(name, login) {
-        console.log('createOrgRepo');
+    getRepo(login, name) {
+        return new Promise((resolve, reject) => {
+            this.request
+                .get(`/repos/${login}/${name}`)
+                .then((response) => {
+                resolve(response);
+            })
+                .catch((err) => reject(err));
+        });
     }
-    async getRemote() {
-        console.log('getRomte');
+    createRepo(name) {
+        return this.request.post('/user/repos', {
+            name,
+        });
     }
-    async getUser() {
-        console.log('getUser');
+    createOrgRepo(name, login) {
+        return this.request.post(`/orgs/${login}/repos`, {
+            name,
+        });
     }
-    async getOrg() {
-        console.log('getOrg');
+    getRemote(name, login) {
+        return `git@gitee.com:${login}/${name}.git`;
+    }
+    getUser() {
+        return this.request.get('/user');
+    }
+    async getOrg(username) {
+        return this.request.get(`/users/${username}/orgs`, {
+            page: 1,
+            per_page: 100,
+        });
     }
     getTokenUrl() {
         return 'https://gitee.com/personal_access_tokens';

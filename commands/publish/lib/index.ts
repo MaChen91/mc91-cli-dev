@@ -4,7 +4,7 @@ const log = require('@mc91-cli-dev/log');
 const path = require('path');
 const fs = require('fs');
 const fse = require('fs-extra');
-import Git, { GitOptions } from '@mc91-cli-dev/git';
+import Git, { GitOpts } from '@mc91-cli-dev/git';
 
 interface projectInfo {
   name: string;
@@ -13,9 +13,7 @@ interface projectInfo {
 }
 
 interface IpublishCmd {
-  opts: {
-    refreshServer?: boolean;
-  };
+  opts: Partial<GitOpts>;
 }
 class PublishCommand extends Command {
   protected _argv: Array<Record<string, any>>;
@@ -38,14 +36,10 @@ class PublishCommand extends Command {
     const startTime = new Date().getTime();
     //1.初始化检查
     await this.prepare();
-    let options: GitOptions = {
-      ...this.projectInfo,
-      ...this._cmd.opts,
-    };
-    const git = new Git(options);
+    const git = new Git(this.projectInfo, this._cmd.opts);
     await git.prepare();
-    git.init();
-
+    await git.init();
+    await git.commit();
     const endTime = new Date().getTime();
     log.info(
       'PUBLISH',

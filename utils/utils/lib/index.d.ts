@@ -3,7 +3,7 @@ declare module '@mc91-cli-dev/utils' {
    * spinner 插件
    * @param text 提示文本
    */
-  export function spinnerStart(text: string): void;
+  export function spinnerStart(text: string): any;
   /**
    * 对象判断
    */
@@ -44,7 +44,7 @@ declare module '@mc91-cli-dev/utils' {
   }
   export function writeFile(
     filePath: string,
-    data: Record<string, string>,
+    data: Record<string, string> | string,
     options: writeFileOptions = { rewrite: true },
   ): boolean;
 }
