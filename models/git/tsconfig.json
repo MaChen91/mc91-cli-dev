@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": false,
-    "outDir": "./lib",
+    "outDir": "lib",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
@@ -18,6 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["./src"],
-  "exclude": ["./__tests__", "node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["./__tests__", "node_modules", "lib/**/*"]
 }

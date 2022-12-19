@@ -23,4 +23,3 @@ class CloudBuild {
     }
 }
 exports.default = CloudBuild;
-//# sourceMappingURL=index.js.map

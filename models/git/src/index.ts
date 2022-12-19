@@ -5,6 +5,7 @@ import GitHub from './GitHub';
 import Gitee from './Gitee';
 import GitServer from './GitServer';
 import { Gitnore } from './config';
+import CloudBuild from '@mc91-cli-dev/cloudbuild';
 const semver = require('semver');
 const terminalLink = require('terminal-link');
 const userHome = require('user-home');
@@ -98,6 +99,7 @@ export interface Remote {
   login: any; // 远程仓库登录名
   repo: any; // 远程仓库信息
   branch: any; // 本地开发分支
+  gitPublish: any; // 静态资源服务器类型
 }
 class Git {
   git: SimpleGit; // SimpleGit实例
@@ -112,6 +114,7 @@ class Git {
     login: null,
     repo: null,
     branch: null,
+    gitPublish: null,
   };
   project: ProjectOpts;
   options: GitOpts = {
@@ -154,6 +157,66 @@ class Git {
     await this.initAndAddRemote();
     // 初始化提交
     await this.initCommit();
+  }
+
+  @verbose()
+  async publish() {
+    await this.preparePublish();
+    const { buildCmd, prod } = this.options;
+    const cloudBuild = new CloudBuild(this, {
+      buildCmd,
+      prod,
+    });
+  }
+
+  /**
+   * 检查packageJson 并执行
+   */
+  @verbose()
+  async preparePublish() {
+    const pkg = this.getPackageJson();
+    if (this.options.buildCmd) {
+      const buildCmdArray = this.options.buildCmd.split(' ');
+      if (buildCmdArray[0] !== 'npm' && buildCmdArray[0] !== 'cnpm') {
+        throw new Error('Build命令非法，必须使用npm或cnpm！');
+      }
+    } else {
+      this.options.buildCmd = 'npm run build';
+    }
+    const buildCmdArray = this.options.buildCmd.split(' ');
+    const lastCmd = buildCmdArray[buildCmdArray.length - 1];
+    if (!pkg.scripts || !Object.keys(pkg.scripts).includes(lastCmd)) {
+      throw new Error(this.options.buildCmd + '命令不存在！');
+    }
+    log.success('代码预检查通过');
+    const gitPublishPath = this.createPath(GIT_PUBLISH_FILE);
+    let gitPublish = readFile(gitPublishPath);
+    if (!gitPublish) {
+      gitPublish = (
+        await inquirer.prompt({
+          type: 'list',
+          choices: GIT_PUBLISH_TYPE,
+          message: '请选择您想要上传代码的平台',
+          name: 'gitPublish',
+        })
+      ).gitPublish;
+      writeFile(gitPublishPath, gitPublish);
+      log.success(
+        'git publish类型写入成功',
+        `${gitPublish} -> ${gitPublishPath}`,
+      );
+    } else {
+      log.success('git publish类型获取成功', gitPublish);
+    }
+    this.remote.gitPublish = gitPublish;
+  }
+
+  getPackageJson() {
+    const pkgPath = path.resolve(this.project.dir, 'package.json');
+    if (!fs.existsSync(pkgPath)) {
+      throw new Error(`package.json 不存在！源码目录：${this.project.dir}`);
+    }
+    return fse.readJsonSync(pkgPath);
   }
 
   @verbose()
@@ -684,7 +747,7 @@ class Git {
  * @param descriptor 方法描述
  */
 
-function verbose(async = true) {
+export function verbose(async = true) {
   return function (
     target: any,
     propertyKey: string,

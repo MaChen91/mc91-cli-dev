@@ -55,6 +55,7 @@ function registerCommand() {
     .option('--refreshServer', '强制刷新远程仓库平台')
     .option('--refreshToken', '强制刷新远程仓库Token')
     .option('--refreshOwner', '强制刷新远程仓库类型')
+    .option('--buildCmd <buildCmd>', '构建命令')
     .action(exec);
 
   //指定targetPath

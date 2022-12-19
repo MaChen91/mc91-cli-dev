@@ -10,12 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.verbose = void 0;
 const simple_git_1 = require("simple-git");
 const utils_1 = require("@mc91-cli-dev/utils");
 const GitHub_1 = require("./GitHub");
 const Gitee_1 = require("./Gitee");
 const GitServer_1 = require("./GitServer");
 const config_1 = require("./config");
+const cloudbuild_1 = require("@mc91-cli-dev/cloudbuild");
 const semver = require('semver');
 const terminalLink = require('terminal-link');
 const userHome = require('user-home');
@@ -83,6 +85,7 @@ class Git {
             login: null,
             repo: null,
             branch: null,
+            gitPublish: null,
         };
         this.options = {
             refreshServer: false,
@@ -112,6 +115,55 @@ class Git {
         }
         await this.initAndAddRemote();
         await this.initCommit();
+    }
+    async publish() {
+        await this.preparePublish();
+        const { buildCmd, prod } = this.options;
+        const cloudBuild = new cloudbuild_1.default(this, {
+            buildCmd,
+            prod,
+        });
+    }
+    async preparePublish() {
+        const pkg = this.getPackageJson();
+        if (this.options.buildCmd) {
+            const buildCmdArray = this.options.buildCmd.split(' ');
+            if (buildCmdArray[0] !== 'npm' && buildCmdArray[0] !== 'cnpm') {
+                throw new Error('Build命令非法，必须使用npm或cnpm！');
+            }
+        }
+        else {
+            this.options.buildCmd = 'npm run build';
+        }
+        const buildCmdArray = this.options.buildCmd.split(' ');
+        const lastCmd = buildCmdArray[buildCmdArray.length - 1];
+        if (!pkg.scripts || !Object.keys(pkg.scripts).includes(lastCmd)) {
+            throw new Error(this.options.buildCmd + '命令不存在！');
+        }
+        log.success('代码预检查通过');
+        const gitPublishPath = this.createPath(GIT_PUBLISH_FILE);
+        let gitPublish = (0, utils_1.readFile)(gitPublishPath);
+        if (!gitPublish) {
+            gitPublish = (await inquirer.prompt({
+                type: 'list',
+                choices: GIT_PUBLISH_TYPE,
+                message: '请选择您想要上传代码的平台',
+                name: 'gitPublish',
+            })).gitPublish;
+            (0, utils_1.writeFile)(gitPublishPath, gitPublish);
+            log.success('git publish类型写入成功', `${gitPublish} -> ${gitPublishPath}`);
+        }
+        else {
+            log.success('git publish类型获取成功', gitPublish);
+        }
+        this.remote.gitPublish = gitPublish;
+    }
+    getPackageJson() {
+        const pkgPath = path.resolve(this.project.dir, 'package.json');
+        if (!fs.existsSync(pkgPath)) {
+            throw new Error(`package.json 不存在！源码目录：${this.project.dir}`);
+        }
+        return fse.readJsonSync(pkgPath);
     }
     async commit() {
         await this.getCorrectVersion();
@@ -502,6 +554,18 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
+], Git.prototype, "publish", null);
+__decorate([
+    verbose(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], Git.prototype, "preparePublish", null);
+__decorate([
+    verbose(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
 ], Git.prototype, "commit", null);
 __decorate([
     verbose(),
@@ -626,4 +690,5 @@ function verbose(async = true) {
         }
     };
 }
+exports.verbose = verbose;
 exports.default = Git;

@@ -28,6 +28,7 @@ export interface Remote {
     login: any;
     repo: any;
     branch: any;
+    gitPublish: any;
 }
 declare class Git {
     git: SimpleGit;
@@ -39,6 +40,9 @@ declare class Git {
     constructor(project: ProjectOpts, gitOpts: Partial<GitOpts>);
     prepare(): Promise<void>;
     init(): Promise<void>;
+    publish(): Promise<void>;
+    preparePublish(): Promise<void>;
+    getPackageJson(): any;
     commit(): Promise<void>;
     pullRemoteMasterAndBranch(): Promise<void>;
     checkoutBranch(branch: string): Promise<void>;
@@ -64,4 +68,5 @@ declare class Git {
     checkGitIgnore(): Promise<void>;
     createPath(file: any): string;
 }
+export declare function verbose(async?: boolean): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void;
 export default Git;

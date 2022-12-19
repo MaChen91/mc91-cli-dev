@@ -6,7 +6,6 @@
   "homepage": "https://github.com/MaChen91/mc91-cli-dev#readme",
   "license": "ISC",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -24,7 +23,6 @@
   "scripts": {
     "test": "node ./__tests__/@mc91-cli-dev/git.test.js",
     "webpack": "webpack",
-    "cleanBuild": "rm -rf ./lib && npm run build",
     "build": "tsc -p tsconfig.json",
     "build:watch": "nodemon -w ./src -e ts -x 'npm run build'"
   },
@@ -32,6 +30,7 @@
     "url": "https://github.com/MaChen91/mc91-cli-dev/issues"
   },
   "dependencies": {
+    "@mc91-cli-dev/cloudbuild": "file:../../models/cloudbuild",
     "@mc91-cli-dev/log": "^1.0.0",
     "@mc91-cli-dev/request": "^1.0.0",
     "@mc91-cli-dev/utils": "^1.0.0",
