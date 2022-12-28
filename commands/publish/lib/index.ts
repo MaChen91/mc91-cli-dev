@@ -40,6 +40,7 @@ class PublishCommand extends Command {
     await git.prepare();
     await git.init();
     await git.commit();
+    await git.publish();
     const endTime = new Date().getTime();
     log.info(
       'PUBLISH',

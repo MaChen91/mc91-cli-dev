@@ -41,6 +41,11 @@ declare class Git {
     prepare(): Promise<void>;
     init(): Promise<void>;
     publish(): Promise<void>;
+    runCreateTagTask(): void;
+    deleteLocalBranch(): Promise<void>;
+    deleteRemoteBranch(): Promise<void>;
+    mergeBranchToMaster(): Promise<void>;
+    checkTag(): Promise<void>;
     preparePublish(): Promise<void>;
     getPackageJson(): any;
     commit(): Promise<void>;
